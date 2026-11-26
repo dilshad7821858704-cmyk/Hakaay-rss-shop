@@ -3,105 +3,527 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>hakaay rss</title>
+  <title>hakaay rss — Official Supply Portal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #0d1117;
-      color: #e6edf3;
-      max-width: 540px;
-      margin: 30px auto;
-      padding: 16px;
+    :root {
+      --bg-base: #07090e;
+      --bg-card: rgba(16, 20, 30, 0.85);
+      --bg-input: #0b0e17;
+      --border: rgba(255, 255, 255, 0.08);
+      --border-gold: rgba(245, 185, 66, 0.35);
+      --gold: #f5b942;
+      --gold-hover: #ffca5c;
+      --gold-glow: rgba(245, 185, 66, 0.22);
+      --text-main: #f3f5f8;
+      --text-muted: #8b95a5;
+      --green: #22c55e;
+      --red: #ef4444;
     }
-    .top-bar {
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background-color: var(--bg-base);
+      background-image:
+        radial-gradient(circle at 15% 10%, rgba(245, 185, 66, 0.12), transparent 35%),
+        radial-gradient(circle at 85% 90%, rgba(56, 189, 248, 0.08), transparent 40%);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      padding: 28px 16px 48px;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 500px;
+    }
+
+    /* Header */
+    .header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding-bottom: 12px;
+      padding: 16px 20px;
+      background: var(--bg-card);
+      backdrop-filter: blur(12px);
+      border: 1px solid var(--border);
+      border-radius: 16px;
       margin-bottom: 20px;
-      border-bottom: 1px solid #30363d;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
     }
-    .badge {
-      background: #d29922;
-      color: #0d1117;
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .logo-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, #f5b942, #d97706);
+      color: #07090e;
+      font-weight: 800;
+      font-size: 18px;
+      display: grid;
+      place-items: center;
+      box-shadow: 0 0 18px var(--gold-glow);
+    }
+
+    .brand-text h1 {
+      font-size: 18px;
+      font-weight: 800;
+      letter-spacing: -0.3px;
+      text-transform: lowercase;
+    }
+
+    .brand-text span {
+      font-size: 11px;
+      color: var(--text-muted);
+      display: block;
+    }
+
+    .seller-pill {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      background: rgba(245, 185, 66, 0.12);
+      border: 1px solid var(--border-gold);
+      color: var(--gold);
       padding: 6px 12px;
-      border-radius: 6px;
-      font-weight: bold;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
     }
-    .box {
-      background: #161b22;
-      border: 1px solid #30363d;
-      border-radius: 8px;
-      padding: 16px;
+
+    .dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--green);
+      box-shadow: 0 0 8px var(--green);
+    }
+
+    /* Tabs */
+    .tabs {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 6px;
+      background: var(--bg-card);
+      padding: 6px;
+      border-radius: 14px;
+      border: 1px solid var(--border);
       margin-bottom: 18px;
     }
-    input, button {
-      width: 100%;
-      padding: 10px;
-      margin-top: 8px;
-      border-radius: 6px;
-      border: 1px solid #30363d;
-      box-sizing: border-box;
-      font-size: 14px;
-    }
-    input {
-      background: #0d1117;
-      color: #e6edf3;
-    }
-    button {
-      background: #d29922;
-      color: #0d1117;
-      font-weight: bold;
+
+    .tab-btn {
+      background: transparent;
       border: none;
+      color: var(--text-muted);
+      font-family: inherit;
+      font-size: 13px;
+      font-weight: 600;
+      padding: 10px 8px;
+      border-radius: 10px;
       cursor: pointer;
+      transition: all 0.2s ease;
     }
-    .coords {
+
+    .tab-btn:hover {
+      color: var(--text-main);
+    }
+
+    .tab-btn.active {
+      background: linear-gradient(135deg, #f5b942, #e09f1f);
+      color: #07090e;
+      font-weight: 700;
+      box-shadow: 0 4px 14px var(--gold-glow);
+    }
+
+    /* Card */
+    .card {
+      background: var(--bg-card);
+      backdrop-filter: blur(14px);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 22px;
+      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.45);
+      display: none;
+      animation: fadeIn 0.22s ease;
+    }
+
+    .card.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .card-title {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .card-sub {
+      font-size: 12.5px;
+      color: var(--text-muted);
+      margin-bottom: 18px;
+    }
+
+    /* Autofill Bar */
+    .autofill-box {
       display: flex;
+      align-items: center;
       gap: 8px;
+      background: var(--bg-input);
+      border: 1px solid var(--border-gold);
+      border-radius: 12px;
+      padding: 6px 6px 6px 12px;
+      margin-bottom: 16px;
+      transition: box-shadow 0.2s;
     }
-    pre {
-      background: #0d1117;
-      padding: 10px;
-      border-radius: 6px;
-      overflow-x: auto;
+
+    .autofill-box:focus-within {
+      box-shadow: 0 0 0 3px rgba(245, 185, 66, 0.14);
+    }
+
+    .autofill-box input {
+      border: none;
+      background: transparent;
+      padding: 6px 0;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      color: var(--text-main);
+      box-shadow: none !important;
+    }
+
+    .auto-btn {
+      background: rgba(245, 185, 66, 0.16);
+      border: 1px solid var(--border-gold);
+      color: var(--gold);
+      font-family: inherit;
+      font-size: 12.5px;
+      font-weight: 700;
+      padding: 8px 14px;
+      border-radius: 8px;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.15s ease;
+    }
+
+    .auto-btn:hover {
+      background: var(--gold);
+      color: #07090e;
+    }
+
+    .field {
+      margin-bottom: 14px;
+    }
+
+    label {
+      display: block;
       font-size: 12px;
+      font-weight: 600;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+    }
+
+    input {
+      width: 100%;
+      background: var(--bg-input);
+      border: 1px solid var(--border);
+      color: var(--text-main);
+      padding: 12px 14px;
+      border-radius: 10px;
+      font-family: inherit;
+      font-size: 14px;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    input.mono {
+      font-family: 'JetBrains Mono', monospace;
+      letter-spacing: 0.4px;
+    }
+
+    input:focus {
+      border-color: var(--gold);
+      box-shadow: 0 0 0 3px rgba(245, 185, 66, 0.14);
+    }
+
+    .coords-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr 1fr;
+      gap: 10px;
+    }
+
+    .action-btn {
+      width: 100%;
+      margin-top: 6px;
+      padding: 13px;
+      border: none;
+      border-radius: 11px;
+      background: linear-gradient(135deg, #f5b942, #d97706);
+      color: #07090e;
+      font-family: inherit;
+      font-size: 14px;
+      font-weight: 800;
+      cursor: pointer;
+      transition: transform 0.15s ease, box-shadow 0.2s ease;
+      box-shadow: 0 6px 20px var(--gold-glow);
+    }
+
+    .action-btn:hover {
+      background: linear-gradient(135deg, #ffca5c, #f59e0b);
+      transform: translateY(-1px);
+    }
+
+    .action-btn:active {
+      transform: translateY(0);
+    }
+
+    .action-btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    /* Output Box */
+    .result-box {
+      margin-top: 16px;
+      background: var(--bg-input);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px 14px;
+    }
+
+    .result-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    .status-pill {
+      padding: 2px 8px;
+      border-radius: 6px;
+      font-weight: 700;
+      font-size: 11px;
+      text-transform: uppercase;
+    }
+
+    .status-idle { background: rgba(255,255,255,0.06); color: var(--text-muted); }
+    .status-ok { background: rgba(34, 197, 94, 0.15); color: var(--green); }
+    .status-err { background: rgba(239, 68, 68, 0.15); color: var(--red); }
+
+    pre {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      color: #cbd5e1;
+      white-space: pre-wrap;
+      word-break: break-word;
+      line-height: 1.5;
+    }
+
+    .copy-btn {
+      margin-top: 10px;
+      width: 100%;
+      padding: 8px;
+      background: rgba(245, 185, 66, 0.12);
+      border: 1px solid var(--border-gold);
+      color: var(--gold);
+      border-radius: 8px;
+      font-family: inherit;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      display: none;
+    }
+
+    .footer {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 11.5px;
+      color: var(--text-muted);
     }
   </style>
 </head>
 <body>
-  <div class="top-bar">
-    <h2>hakaay rss</h2>
-    <div class="badge" id="sellerBadge">hakaay rss</div>
-  </div>
-
-  <div class="box">
-    <h3>Redeem Voucher</h3>
-    <input type="text" id="voucher_code" placeholder="Voucher Code (LM-XXXX-XXXX)" />
-    <input type="text" id="player_name" placeholder="Player Name" />
-    <div class="coords">
-      <input type="number" id="kingdom" placeholder="Kingdom" />
-      <input type="number" id="x" placeholder="X" />
-      <input type="number" id="y" placeholder="Y" />
+  <div class="container">
+    <!-- Top Header -->
+    <div class="header">
+      <div class="brand">
+        <div class="logo-icon">H</div>
+        <div class="brand-text">
+          <h1>hakaay rss</h1>
+          <span>Instant Resource Delivery</span>
+        </div>
+      </div>
+      <div class="seller-pill">
+        <span class="dot"></span>
+        <span id="sellerBadge">hakaay rss</span>
+      </div>
     </div>
-    <button onclick="redeem()">Redeem Voucher</button>
-    <pre id="redeemOut">Ready.</pre>
-  </div>
 
-  <div class="box">
-    <h3>Check Order Status</h3>
-    <input type="text" id="order_code" placeholder="Order Code" />
-    <button onclick="checkOrder()">Check Order</button>
-    <pre id="orderOut">Enter an order code to check.</pre>
-  </div>
+    <!-- Navigation Tabs -->
+    <div class="tabs">
+      <button class="tab-btn active" onclick="switchTab('redeem', this)">Redeem</button>
+      <button class="tab-btn" onclick="switchTab('order', this)">Order Status</button>
+      <button class="tab-btn" onclick="switchTab('voucher', this)">Voucher Check</button>
+    </div>
 
-  <div class="box">
-    <h3>Check Voucher Status</h3>
-    <input type="text" id="check_voucher_code" placeholder="Voucher Code (LM-XXXX-XXXX)" />
-    <button onclick="checkVoucher()">Check Voucher</button>
-    <pre id="voucherOut">Enter a voucher code to check.</pre>
+    <!-- Tab 1: Redeem Voucher -->
+    <div class="card active" id="tab-redeem">
+      <div class="card-title">Redeem Voucher</div>
+      <div class="card-sub">Paste your coordinates line for instant auto-fill, or enter manually.</div>
+
+      <!-- Quick Autofill Bar -->
+      <div class="autofill-box">
+        <input
+          type="text"
+          id="autofill_input"
+          placeholder="[GLD]Name K:71 X:356 Y:76"
+          onpaste="setTimeout(autoFillDetails, 50)"
+        />
+        <button type="button" class="auto-btn" id="autoBtn" onclick="autoFillDetails()">Auto</button>
+      </div>
+
+      <div class="field">
+        <label>Voucher Code</label>
+        <input type="text" id="voucher_code" class="mono" placeholder="LM-XXXX-XXXX" />
+      </div>
+
+      <div class="field">
+        <label>In-Game Player Name</label>
+        <input type="text" id="player_name" placeholder="Exact castle name" />
+      </div>
+
+      <div class="field">
+        <label>Castle Coordinates</label>
+        <div class="coords-grid">
+          <input type="number" id="kingdom" placeholder="Kingdom" />
+          <input type="number" id="x" placeholder="X" />
+          <input type="number" id="y" placeholder="Y" />
+        </div>
+      </div>
+
+      <button class="action-btn" id="redeemBtn" onclick="redeem()">Redeem Voucher Now</button>
+
+      <div class="result-box">
+        <div class="result-header">
+          <span>SERVER RESPONSE</span>
+          <span class="status-pill status-idle" id="redeemBadge">READY</span>
+        </div>
+        <pre id="redeemOut">Fill in the details above and tap Redeem.</pre>
+        <button class="copy-btn" id="copyOrderBtn" onclick="copyOrderCode()">Copy Order Code & Track</button>
+      </div>
+    </div>
+
+    <!-- Tab 2: Check Order Status -->
+    <div class="card" id="tab-order">
+      <div class="card-title">Track Order Status</div>
+      <div class="card-sub">Check live delivery status using your order code.</div>
+
+      <div class="field">
+        <label>Order Code</label>
+        <input type="text" id="order_code" class="mono" placeholder="e.g. ABCD1234" />
+      </div>
+
+      <button class="action-btn" id="orderBtn" onclick="checkOrder()">Check Order Status</button>
+
+      <div class="result-box">
+        <div class="result-header">
+          <span>ORDER DETAILS</span>
+          <span class="status-pill status-idle" id="orderBadge">WAITING</span>
+        </div>
+        <pre id="orderOut">Enter an order code to view live status.</pre>
+      </div>
+    </div>
+
+    <!-- Tab 3: Check Voucher Status -->
+    <div class="card" id="tab-voucher">
+      <div class="card-title">Verify Voucher</div>
+      <div class="card-sub">Check if a voucher code is valid and unused before redeeming.</div>
+
+      <div class="field">
+        <label>Voucher Code</label>
+        <input type="text" id="check_voucher_code" class="mono" placeholder="LM-XXXX-XXXX" />
+      </div>
+
+      <button class="action-btn" id="voucherBtn" onclick="checkVoucher()">Verify Voucher</button>
+
+      <div class="result-box">
+        <div class="result-header">
+          <span>VOUCHER INFO</span>
+          <span class="status-pill status-idle" id="voucherBadge">WAITING</span>
+        </div>
+        <pre id="voucherOut">Enter a voucher code to inspect.</pre>
+      </div>
+    </div>
+
+    <div class="footer">Powered by hakaay rss • Secure API Gateway</div>
   </div>
 
   <script>
+    let lastOrderCode = '';
+
+    function autoFillDetails() {
+      const raw = document.getElementById('autofill_input').value.trim();
+      const btn = document.getElementById('autoBtn');
+      if (!raw) return;
+
+      // Match K:71 X:356 Y:76 (case-insensitive, allows optional spaces after colons)
+      const kMatch = raw.match(/K\s*:\s*(\d+)/i);
+      const xMatch = raw.match(/X\s*:\s*(\d+)/i);
+      const yMatch = raw.match(/Y\s*:\s*(\d+)/i);
+
+      if (kMatch) document.getElementById('kingdom').value = kMatch[1];
+      if (xMatch) document.getElementById('x').value = xMatch[1];
+      if (yMatch) document.getElementById('y').value = yMatch[1];
+
+      // Extract player name before K:... and strip optional [GUILD] tag
+      let namePart = raw.split(/K\s*:\s*\d+/i)[0].trim();
+      namePart = namePart.replace(/^\[[^\]]+\]\s*/, '').trim();
+
+      if (namePart) {
+        document.getElementById('player_name').value = namePart;
+      }
+
+      // Visual feedback on the Auto button
+      btn.textContent = 'Filled ✓';
+      setTimeout(() => {
+        btn.textContent = 'Auto';
+      }, 1400);
+    }
+
+    function switchTab(name, btn) {
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.card').forEach(c => c.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById('tab-' + name).classList.add('active');
+    }
+
+    function setStatus(badgeId, isOk, label) {
+      const el = document.getElementById(badgeId);
+      el.textContent = label;
+      el.className = 'status-pill ' + (isOk ? 'status-ok' : 'status-err');
+    }
+
     async function loadProfile() {
       try {
         const res = await fetch('/api/me');
@@ -120,6 +542,10 @@
     }
 
     async function redeem() {
+      const btn = document.getElementById('redeemBtn');
+      const copyBtn = document.getElementById('copyOrderBtn');
+      copyBtn.style.display = 'none';
+
       const payload = {
         voucher_code: document.getElementById('voucher_code').value.trim(),
         player_name: document.getElementById('player_name').value.trim(),
@@ -127,32 +553,91 @@
         x: document.getElementById('x').value.trim(),
         y: document.getElementById('y').value.trim()
       };
-      const res = await fetch('/api/redeem', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
-      });
-      const data = await res.json();
-      document.getElementById('redeemOut').textContent = JSON.stringify(data, null, 2);
-      if (data.order_code) {
-        document.getElementById('order_code').value = data.order_code;
+
+      if (!payload.voucher_code || !payload.player_name || !payload.kingdom || !payload.x || !payload.y) {
+        setStatus('redeemBadge', false, 'MISSING FIELDS');
+        document.getElementById('redeemOut').textContent = 'Please fill in all fields before redeeming.';
+        return;
       }
+
+      btn.disabled = true;
+      btn.textContent = 'Processing...';
+
+      try {
+        const res = await fetch('/api/redeem', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        const data = await res.json();
+        const ok = Boolean(data.success || data.ok);
+        setStatus('redeemBadge', ok, ok ? 'SUCCESS' : 'FAILED');
+        document.getElementById('redeemOut').textContent = JSON.stringify(data, null, 2);
+
+        if (data.order_code) {
+          lastOrderCode = data.order_code;
+          document.getElementById('order_code').value = data.order_code;
+          copyBtn.style.display = 'block';
+        }
+      } catch (e) {
+        setStatus('redeemBadge', false, 'ERROR');
+        document.getElementById('redeemOut').textContent = 'Network error. Please try again.';
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Redeem Voucher Now';
+      }
+    }
+
+    function copyOrderCode() {
+      if (!lastOrderCode) return;
+      navigator.clipboard?.writeText(lastOrderCode);
+      const tabButtons = document.querySelectorAll('.tab-btn');
+      switchTab('order', tabButtons[1]);
+      checkOrder();
     }
 
     async function checkOrder() {
       const code = document.getElementById('order_code').value.trim();
       if (!code) return;
-      const res = await fetch(`/api/orders/${encodeURIComponent(code)}`);
-      const data = await res.json();
-      document.getElementById('orderOut').textContent = JSON.stringify(data, null, 2);
+      const btn = document.getElementById('orderBtn');
+      btn.disabled = true;
+      btn.textContent = 'Checking...';
+
+      try {
+        const res = await fetch(`/api/orders/${encodeURIComponent(code)}`);
+        const data = await res.json();
+        const ok = Boolean(data.ok || data.success || data.status);
+        setStatus('orderBadge', ok, (data.status || (ok ? 'FOUND' : 'ERROR')).toUpperCase());
+        document.getElementById('orderOut').textContent = JSON.stringify(data, null, 2);
+      } catch (e) {
+        setStatus('orderBadge', false, 'ERROR');
+        document.getElementById('orderOut').textContent = 'Could not fetch order status.';
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Check Order Status';
+      }
     }
 
     async function checkVoucher() {
       const code = document.getElementById('check_voucher_code').value.trim();
       if (!code) return;
-      const res = await fetch(`/api/vouchers/${encodeURIComponent(code)}`);
-      const data = await res.json();
-      document.getElementById('voucherOut').textContent = JSON.stringify(data, null, 2);
+      const btn = document.getElementById('voucherBtn');
+      btn.disabled = true;
+      btn.textContent = 'Checking...';
+
+      try {
+        const res = await fetch(`/api/vouchers/${encodeURIComponent(code)}`);
+        const data = await res.json();
+        const ok = Boolean(data.ok || data.success || data.valid);
+        setStatus('voucherBadge', ok, (data.status || (ok ? 'VALID' : 'INVALID')).toUpperCase());
+        document.getElementById('voucherOut').textContent = JSON.stringify(data, null, 2);
+      } catch (e) {
+        setStatus('voucherBadge', false, 'ERROR');
+        document.getElementById('voucherOut').textContent = 'Could not check voucher.';
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Verify Voucher';
+      }
     }
 
     loadProfile();
